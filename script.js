@@ -1,5 +1,10 @@
-let port;
-let reader;
+// ============================================
+// SMART RAIN CLOTHES SHED
+// Arduino UNO + Web Serial Dashboard
+// ============================================
+
+let port = null;
+let reader = null;
 
 let sensorValue = 0;
 let rainStatus = "WAITING";
@@ -7,7 +12,12 @@ let shedStatus = "---";
 let clothesStatus = "---";
 let systemStatus = "---";
 
-const connectButton = document.getElementById("connectButton");
+// ============================================
+// HTML ELEMENTS
+// ============================================
+
+const connectButton =
+    document.getElementById("connectButton");
 
 const connectionStatus =
     document.getElementById("connectionStatus");
@@ -28,31 +38,54 @@ const systemDisplay =
     document.getElementById("systemStatus");
 
 
-/* ==========================================
-   CONNECT TO ARDUINO
-========================================== */
+// ============================================
+// CHECK BROWSER SUPPORT
+// ============================================
+
+if (!("serial" in navigator)) {
+
+    alert(
+        "Web Serial is not supported in this browser.\n\n" +
+        "Please use the latest Google Chrome or Microsoft Edge."
+    );
+
+    connectButton.disabled = true;
+
+}
+
+
+// ============================================
+// CONNECT ARDUINO
+// ============================================
 
 connectButton.addEventListener("click", async () => {
 
     try {
 
-        // Ask Chrome for a serial port
+        // Ask Chrome to select a serial device
         port = await navigator.serial.requestPort();
 
-        // Open Arduino serial connection
+        // Open serial connection
         await port.open({
             baudRate: 9600
         });
 
-        // Update connection status
+        // Update connection UI
         connectionStatus.textContent =
             "🟢 Arduino Connected";
 
-        connectionStatus.classList.remove("disconnected");
-        connectionStatus.classList.add("connected");
+        connectionStatus.classList.remove(
+            "disconnected"
+        );
+
+        connectionStatus.classList.add(
+            "connected"
+        );
 
         connectButton.textContent =
             "🟢 Arduino Connected";
+
+        connectButton.disabled = true;
 
         // Start reading Arduino
         readSerial();
@@ -61,28 +94,46 @@ connectButton.addEventListener("click", async () => {
 
     catch (error) {
 
-        console.error(error);
+        console.error(
+            "Arduino connection error:",
+            error
+        );
 
         alert(
             "Could not connect to Arduino.\n\n" +
-            "Make sure the Serial Monitor is CLOSED."
+            "Make sure:\n" +
+            "1. Arduino is connected by USB\n" +
+            "2. Serial Monitor is CLOSED\n" +
+            "3. You select the correct COM port"
         );
+
     }
 
 });
 
 
-/* ==========================================
-   READ SERIAL DATA
-========================================== */
+// ============================================
+// READ SERIAL DATA
+// ============================================
 
 async function readSerial() {
 
-    const decoder = new TextDecoderStream();
+    if (!port || !port.readable) {
 
-    const inputDone = port.readable.pipeTo(decoder.writable);
+        return;
 
-    reader = decoder.readable.getReader();
+    }
+
+    const decoder =
+        new TextDecoderStream();
+
+    const inputDone =
+        port.readable.pipeTo(
+            decoder.writable
+        );
+
+    reader =
+        decoder.readable.getReader();
 
     let buffer = "";
 
@@ -94,22 +145,34 @@ async function readSerial() {
                 await reader.read();
 
             if (done) {
+
                 break;
+
             }
 
-            buffer += value;
+            if (value) {
 
-            let lines = buffer.split("\n");
+                buffer += value;
 
-            buffer = lines.pop();
+                // Split Arduino messages by newline
+                const lines =
+                    buffer.split("\n");
 
-            for (let line of lines) {
+                // Keep incomplete line
+                buffer =
+                    lines.pop();
 
-                line = line.trim();
+                // Process completed lines
+                for (let line of lines) {
 
-                if (line.length > 0) {
+                    line =
+                        line.trim();
 
-                    processArduinoData(line);
+                    if (line.length > 0) {
+
+                        processArduinoData(line);
+
+                    }
 
                 }
 
@@ -126,98 +189,219 @@ async function readSerial() {
             error
         );
 
+        showDisconnected();
+
     }
 
 }
 
 
-/* ==========================================
-   PROCESS ARDUINO DATA
-========================================== */
+// ============================================
+// PROCESS ARDUINO DATA
+// ============================================
 
 function processArduinoData(data) {
 
-    console.log("Arduino:", data);
+    console.log(
+        "Arduino:",
+        data
+    );
 
 
-    // SENSOR
+    // ========================================
+    // SENSOR VALUE
+    // ========================================
 
     if (data.startsWith("SENSOR:")) {
 
         sensorValue =
             parseInt(
-                data.replace("SENSOR:", "")
+                data.substring(7)
             );
 
-        sensorDisplay.textContent =
-            "Sensor Value: " + sensorValue;
+        if (!isNaN(sensorValue)) {
+
+            sensorDisplay.textContent =
+                "Sensor Value: " +
+                sensorValue;
+
+        }
+
     }
 
 
-    // RAIN
+    // ========================================
+    // RAIN STATUS
+    // ========================================
 
     else if (data.startsWith("RAIN:")) {
 
-        let value =
-            data.replace("RAIN:", "");
+        const value =
+            data.substring(5);
+
 
         if (value === "YES") {
 
-            rainStatus = "RAIN DETECTED";
+            rainStatus =
+                "RAIN DETECTED";
 
             rainDisplay.textContent =
                 "🌧️ RAIN DETECTED";
+
+            rainDisplay.style.color =
+                "#f87171";
 
         }
 
         else {
 
-            rainStatus = "DRY";
+            rainStatus =
+                "DRY";
 
             rainDisplay.textContent =
                 "☀️ DRY";
+
+            rainDisplay.style.color =
+                "#4ade80";
 
         }
 
     }
 
 
-    // SHED
+    // ========================================
+    // SHED STATUS
+    // ========================================
 
     else if (data.startsWith("SHED:")) {
 
         shedStatus =
-            data.replace("SHED:", "");
+            data.substring(5);
 
         shedDisplay.textContent =
             shedStatus;
 
+
+        if (shedStatus === "CLOSED") {
+
+            shedDisplay.style.color =
+                "#60a5fa";
+
+        }
+
+        else {
+
+            shedDisplay.style.color =
+                "#4ade80";
+
+        }
+
     }
 
 
-    // CLOTHES
+    // ========================================
+    // CLOTHES STATUS
+    // ========================================
 
     else if (data.startsWith("CLOTHES:")) {
 
         clothesStatus =
-            data.replace("CLOTHES:", "");
+            data.substring(8);
 
         clothesDisplay.textContent =
             clothesStatus;
 
+
+        if (clothesStatus === "INSIDE") {
+
+            clothesDisplay.style.color =
+                "#60a5fa";
+
+        }
+
+        else {
+
+            clothesDisplay.style.color =
+                "#4ade80";
+
+        }
+
     }
 
 
-    // SYSTEM
+    // ========================================
+    // SYSTEM STATUS
+    // ========================================
 
     else if (data.startsWith("SYSTEM:")) {
 
         systemStatus =
-            data.replace("SYSTEM:", "");
+            data.substring(7);
 
         systemDisplay.textContent =
-            systemStatus;
+            formatSystemStatus(
+                systemStatus
+            );
 
     }
+
+}
+
+
+// ============================================
+// FORMAT SYSTEM STATUS
+// ============================================
+
+function formatSystemStatus(status) {
+
+    switch (status) {
+
+        case "NORMAL":
+            return "🟢 NORMAL";
+
+        case "CLOSING_SHED":
+            return "🔵 CLOSING SHED";
+
+        case "MOVING_CLOTHES_INSIDE":
+            return "🔵 MOVING CLOTHES INSIDE";
+
+        case "RAIN_PROTECTION":
+            return "🌧️ RAIN PROTECTION";
+
+        case "OPENING_SHED":
+            return "🔵 OPENING SHED";
+
+        case "MOVING_CLOTHES_OUTSIDE":
+            return "🔵 MOVING CLOTHES OUTSIDE";
+
+        default:
+            return status;
+
+    }
+
+}
+
+
+// ============================================
+// DISCONNECTED STATE
+// ============================================
+
+function showDisconnected() {
+
+    connectionStatus.textContent =
+        "🔴 Arduino Disconnected";
+
+    connectionStatus.classList.remove(
+        "connected"
+    );
+
+    connectionStatus.classList.add(
+        "disconnected"
+    );
+
+    connectButton.textContent =
+        "🔌 Connect Arduino";
+
+    connectButton.disabled = false;
 
 }
