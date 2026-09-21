@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Rain Clothes Shed</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>🌧️ Smart Rain Clothes Shed</h1>
+            <p>Automatic Rain Detection & Clothes Protection System</p>
+
+            <div id="connectionStatus" class="status disconnected">
+                🔴 Arduino Disconnected
+            </div>
+        </header>
+
+
+        <section class="dashboard">
+
+            <!-- RAIN STATUS -->
+            <div class="card rain-card">
+
+                <div class="icon">🌧️</div>
+
+                <h2>Rain Status</h2>
+
+                <div id="rainStatus" class="value">
+                    WAITING
+                </div>
+
+                <p id="sensorValue">
+                    Sensor Value: ---
+                </p>
+
+            </div>
+
+
+            <!-- SHED -->
+            <div class="card">
+
+                <div class="icon">🏠</div>
+
+                <h2>Shed</h2>
+
+                <div id="shedStatus" class="value">
+                    ---
+                </div>
+
+                <p>Roof position</p>
+
+            </div>
+
+
+            <!-- CLOTHES -->
+            <div class="card">
+
+                <div class="icon">👕</div>
+
+                <h2>Clothes</h2>
+
+                <div id="clothesStatus" class="value">
+                    ---
+                </div>
+
+                <p>Clothes position</p>
+
+            </div>
+
+
+            <!-- SYSTEM -->
+            <div class="card system-card">
+
+                <div class="icon">⚙️</div>
+
+                <h2>System Status</h2>
+
+                <div id="systemStatus" class="value">
+                    ---
+                </div>
+
+                <p>Current operation</p>
+
+            </div>
+
+        </section>
+
+
+        <!-- CONNECT BUTTON -->
+
+        <section class="connection">
+
+            <button id="connectButton">
+                🔌 Connect Arduino
+            </button>
+
+            <p>
+                Connect your Arduino UNO through USB and click the button.
+            </p>
+
+        </section>
+
+
+        <footer>
+            <p>Arduino UNO • Rain Sensor • Servo Motors</p>
+        </footer>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
