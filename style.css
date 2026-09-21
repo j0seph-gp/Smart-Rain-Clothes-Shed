@@ -1,147 +1,478 @@
+/* =========================================
+   SMART RAIN CLOTHES SHED
+   Professional Dark IoT Dashboard
+========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+
+/* =========================================
+   GLOBAL
+========================================= */
+
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-main: #080b12;
+    --bg-secondary: #0d111a;
+    --card-bg: #111722;
+    --card-hover: #151c29;
+
+    --border: #202938;
+    --border-light: #293447;
+
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --blue: #3b82f6;
+    --blue-light: #60a5fa;
+
+    --green: #22c55e;
+    --green-light: #4ade80;
+
+    --red: #ef4444;
+    --red-light: #f87171;
+
+    --yellow: #eab308;
+
+    --cyan: #06b6d4;
+
+    --radius: 16px;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #eef4f8;
-    color: #1f2937;
+    font-family: 'Inter', sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(59, 130, 246, 0.08),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(6, 182, 212, 0.06),
+            transparent 35%
+        ),
+        var(--bg-main);
+
+    color: var(--text-primary);
+
     min-height: 100vh;
 }
 
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
+
 .container {
-    max-width: 1100px;
+    width: min(1200px, 92%);
     margin: auto;
-    padding: 30px 20px;
+    padding: 35px 0 40px;
 }
 
-/* HEADER */
+
+/* =========================================
+   HEADER
+========================================= */
 
 header {
-    text-align: center;
-    margin-bottom: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 22px 26px;
+
+    background: rgba(17, 23, 34, 0.85);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    margin-bottom: 25px;
+
+    backdrop-filter: blur(15px);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(59, 130, 246, 0.12);
+
+    font-size: 25px;
 }
 
 header h1 {
-    font-size: 38px;
-    margin-bottom: 10px;
+    font-size: 23px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 header p {
-    color: #64748b;
-    font-size: 17px;
+    margin-top: 5px;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
 }
 
 
-/* CONNECTION STATUS */
+/* =========================================
+   CONNECTION STATUS
+========================================= */
 
 .status {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 9px 14px;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    border: 1px solid;
 }
 
 .disconnected {
-    background: #fee2e2;
-    color: #b91c1c;
+    color: var(--red-light);
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.2);
 }
 
 .connected {
-    background: #dcfce7;
-    color: #15803d;
+    color: var(--green-light);
+    background: rgba(34, 197, 94, 0.08);
+    border-color: rgba(34, 197, 94, 0.2);
 }
 
 
-/* DASHBOARD */
+/* =========================================
+   DASHBOARD GRID
+========================================= */
 
 .dashboard {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 16px;
 }
 
 
-/* CARDS */
+/* =========================================
+   CARDS
+========================================= */
 
 .card {
-    background: white;
-    border-radius: 20px;
-    padding: 30px;
-    text-align: center;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    position: relative;
+
+    background: linear-gradient(
+        145deg,
+        #121925,
+        #0e141e
+    );
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    padding: 23px;
+
+    min-height: 190px;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
 }
+
+.card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 2px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(59, 130, 246, 0.7),
+        transparent
+    );
+
+    opacity: 0.5;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+
+    border-color: var(--border-light);
+
+    background: var(--card-hover);
+}
+
+
+/* =========================================
+   CARD ICON
+========================================= */
 
 .icon {
-    font-size: 45px;
-    margin-bottom: 15px;
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(255, 255, 255, 0.04);
+
+    font-size: 23px;
+
+    margin-bottom: 20px;
 }
+
+
+/* =========================================
+   CARD TITLE
+========================================= */
 
 .card h2 {
-    font-size: 21px;
-    margin-bottom: 15px;
+    color: var(--text-secondary);
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.7px;
+
+    margin-bottom: 9px;
 }
 
+
+/* =========================================
+   CARD VALUE
+========================================= */
+
 .value {
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: 10px;
+    color: var(--text-primary);
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+
+    margin-bottom: 8px;
 }
 
 .card p {
-    color: #64748b;
+    color: var(--text-muted);
+
+    font-size: 12px;
 }
 
 
-/* CONNECTION */
+/* =========================================
+   RAIN STATUS
+========================================= */
+
+.rain-card .icon {
+    background: rgba(6, 182, 212, 0.1);
+}
+
+.rain-card .value {
+    color: var(--cyan);
+}
+
+
+/* =========================================
+   SYSTEM CARD
+========================================= */
+
+.system-card .icon {
+    background: rgba(59, 130, 246, 0.1);
+}
+
+
+/* =========================================
+   CONNECTION PANEL
+========================================= */
 
 .connection {
-    text-align: center;
-    margin-top: 35px;
+    margin-top: 20px;
+
+    padding: 25px;
+
+    background: var(--card-bg);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
 }
 
+.connection-text h3 {
+    font-size: 15px;
+
+    margin-bottom: 5px;
+}
+
+.connection-text p {
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   CONNECT BUTTON
+========================================= */
+
 button {
-    border: none;
-    background: #2563eb;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #1d4ed8
+    );
+
     color: white;
-    padding: 15px 30px;
-    font-size: 17px;
-    font-weight: bold;
+
+    padding: 12px 22px;
+
     border-radius: 10px;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
     cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
 }
 
 button:hover {
-    background: #1d4ed8;
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(37, 99, 235, 0.25);
 }
 
-.connection p {
-    margin-top: 12px;
-    color: #64748b;
+button:active {
+    transform: translateY(0);
 }
 
 
-/* FOOTER */
+/* =========================================
+   FOOTER
+========================================= */
 
 footer {
-    text-align: center;
-    margin-top: 40px;
-    color: #64748b;
+    margin-top: 25px;
+
+    padding: 18px 0;
+
+    border-top: 1px solid var(--border);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    color: var(--text-muted);
+
+    font-size: 11px;
 }
 
 
-/* MOBILE */
+/* =========================================
+   RESPONSIVE
+========================================= */
 
-@media (max-width: 700px) {
+@media (max-width: 1000px) {
 
-    header h1 {
-        font-size: 28px;
+    .dashboard {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .container {
+        width: 94%;
+        padding-top: 20px;
+    }
+
+    header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 18px;
     }
 
     .dashboard {
         grid-template-columns: 1fr;
+    }
+
+    .connection {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 18px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    footer {
+        flex-direction: column;
+
+        gap: 8px;
     }
 }
