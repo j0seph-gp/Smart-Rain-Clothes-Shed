@@ -1,38 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Smart Rain Clothes Shed - Real-time Arduino monitoring dashboard"
+    >
 
     <title>Smart Rain Clothes Shed</title>
 
+    <!-- Google Font -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Main CSS -->
     <link rel="stylesheet" href="style.css">
+
 </head>
+
 
 <body>
 
     <div class="container">
 
-        <header>
-            <h1>🌧️ Smart Rain Clothes Shed</h1>
-            <p>Automatic Rain Detection & Clothes Protection System</p>
 
-            <div id="connectionStatus" class="status disconnected">
+        <!-- =====================================
+             HEADER
+        ====================================== -->
+
+        <header>
+
+            <div class="header-left">
+
+                <div class="header-icon">
+                    🌧️
+                </div>
+
+                <div>
+
+                    <h1>
+                        Smart Rain Clothes Shed
+                    </h1>
+
+                    <p>
+                        Automated Rain Detection & Clothes Protection System
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Arduino connection status -->
+
+            <div
+                id="connectionStatus"
+                class="status disconnected"
+            >
                 🔴 Arduino Disconnected
             </div>
+
         </header>
 
 
+
+        <!-- =====================================
+             DASHBOARD
+        ====================================== -->
+
         <section class="dashboard">
 
-            <!-- RAIN STATUS -->
+
+            <!-- =================================
+                 RAIN STATUS CARD
+            ================================== -->
+
             <div class="card rain-card">
 
-                <div class="icon">🌧️</div>
+                <div class="icon">
+                    🌧️
+                </div>
 
-                <h2>Rain Status</h2>
+                <h2>
+                    Rain Status
+                </h2>
 
-                <div id="rainStatus" class="value">
+                <div
+                    id="rainStatus"
+                    class="value"
+                >
                     WAITING
                 </div>
 
@@ -43,79 +120,155 @@
             </div>
 
 
-            <!-- SHED -->
+
+            <!-- =================================
+                 SHED STATUS CARD
+            ================================== -->
+
             <div class="card">
 
-                <div class="icon">🏠</div>
+                <div class="icon">
+                    🏠
+                </div>
 
-                <h2>Shed</h2>
+                <h2>
+                    Shed
+                </h2>
 
-                <div id="shedStatus" class="value">
+                <div
+                    id="shedStatus"
+                    class="value"
+                >
                     ---
                 </div>
 
-                <p>Roof position</p>
+                <p>
+                    Roof position
+                </p>
 
             </div>
 
 
-            <!-- CLOTHES -->
+
+            <!-- =================================
+                 CLOTHES STATUS CARD
+            ================================== -->
+
             <div class="card">
 
-                <div class="icon">👕</div>
+                <div class="icon">
+                    👕
+                </div>
 
-                <h2>Clothes</h2>
+                <h2>
+                    Clothes
+                </h2>
 
-                <div id="clothesStatus" class="value">
+                <div
+                    id="clothesStatus"
+                    class="value"
+                >
                     ---
                 </div>
 
-                <p>Clothes position</p>
+                <p>
+                    Clothes position
+                </p>
 
             </div>
 
 
-            <!-- SYSTEM -->
+
+            <!-- =================================
+                 SYSTEM STATUS CARD
+            ================================== -->
+
             <div class="card system-card">
 
-                <div class="icon">⚙️</div>
+                <div class="icon">
+                    ⚙️
+                </div>
 
-                <h2>System Status</h2>
+                <h2>
+                    System Status
+                </h2>
 
-                <div id="systemStatus" class="value">
+                <div
+                    id="systemStatus"
+                    class="value"
+                >
                     ---
                 </div>
 
-                <p>Current operation</p>
+                <p>
+                    Current operation
+                </p>
 
             </div>
+
 
         </section>
 
 
-        <!-- CONNECT BUTTON -->
+
+        <!-- =====================================
+             ARDUINO CONNECTION PANEL
+        ====================================== -->
 
         <section class="connection">
+
+
+            <div class="connection-text">
+
+                <h3>
+                    Arduino Controller
+                </h3>
+
+                <p>
+                    Connect your Arduino UNO through USB
+                    to receive real-time sensor data.
+                </p>
+
+            </div>
+
 
             <button id="connectButton">
                 🔌 Connect Arduino
             </button>
 
-            <p>
-                Connect your Arduino UNO through USB and click the button.
-            </p>
 
         </section>
 
 
+
+        <!-- =====================================
+             FOOTER
+        ====================================== -->
+
         <footer>
-            <p>Arduino UNO • Rain Sensor • Servo Motors</p>
+
+            <p>
+                Smart Rain Clothes Shed
+            </p>
+
+            <p>
+                Arduino UNO • Rain Sensor • Servo Motors
+            </p>
+
         </footer>
+
 
     </div>
 
 
+
+    <!-- =====================================
+         JAVASCRIPT
+    ====================================== -->
+
     <script src="script.js"></script>
 
+
 </body>
+
 </html>
